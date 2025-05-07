@@ -3,11 +3,12 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../db/db';
 import { tagsService } from '../../services/tagsService';
 import TagBadge from './TagBadge';
-import { X, ChevronDown } from 'lucide-react';
+import { X, ChevronDown, Trash2 } from 'lucide-react';
 
 function TagsDropdown({ selectedTagIds, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
   const dropdownRef = useRef(null);
   
   // Get all tags from db
@@ -43,7 +44,6 @@ function TagsDropdown({ selectedTagIds, onChange }) {
     const handleDeleteTag = async (tagId) => {
       try {
         await tagsService.deleteTag(tagId);
-        // Remove from selected tags if present
         if (selectedTagIds.includes(tagId)) {
           onChange(selectedTagIds.filter(id => id !== tagId));
         }
@@ -105,14 +105,27 @@ function TagsDropdown({ selectedTagIds, onChange }) {
                     {categoryTags.map(tag => (
                       <div 
                         key={tag.id}
-                        onClick={() => handleTagSelect(tag.id)}
-                        className={`cursor-pointer rounded-md px-2 py-1 text-sm border ${
+                        className={`group flex items-center justify-between rounded-md px-2 py-1 text-sm border ${
                           selectedTagIds.includes(tag.id)
                             ? 'border-primary-500 bg-primary-50'
                             : 'border-gray-200 hover:bg-gray-50'
                         }`}
                       >
-                        {tag.name}
+                        <span 
+                          onClick={() => handleTagSelect(tag.id)}
+                          className="cursor-pointer"
+                        >
+                          {tag.name}
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowDeleteConfirm(tag.id);
+                          }}
+                          className="ml-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Trash2 size={14} />
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -151,7 +164,7 @@ function TagsDropdown({ selectedTagIds, onChange }) {
         </div>
       )}
 
-      {/* Delete modal */}
+      {/* Delete confirmation modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
