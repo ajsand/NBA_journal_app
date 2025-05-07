@@ -41,7 +41,7 @@ const sampleEntries = [
     title: "Durant's Scoring Milestone",
     body: "<p>Kevin Durant reached 30,000 career points tonight, becoming only the 7th player in NBA history to reach this milestone. It was a special moment in an otherwise routine regular season game against the Rockets.</p><p>Durant needed 18 points coming into tonight's game to reach the mark. He hit the milestone on a smooth mid-range jumper from his favorite spot on the right elbow with 4:32 remaining in the second quarter.</p><p>The 30K club is extremely exclusive, with Durant joining LeBron James, Kareem Abdul-Jabbar, Karl Malone, Kobe Bryant, Michael Jordan, and Dirk Nowitzki. What makes Durant's achievement especially impressive is his efficiency - he has the highest career field goal percentage and three-point percentage of anyone in this elite group.</p><p>At 36 years old, Durant shows no signs of slowing down. He's averaging 26.3 PPG this season on 52% shooting. If he maintains this level of play for another 2-3 seasons, he could potentially climb as high as 4th on the all-time scoring list.</p>",
     type: "Commentary",
-    tagIds: [9, 14, 17],
+    tagIds: [9, 14],
     dateCreated: new Date(2025, 3, 18, 10, 32),
     dateModified: new Date(2025, 3, 18, 10, 32)
   },
@@ -55,9 +55,9 @@ const sampleEntries = [
   },
   {
     title: "Top 5 MVP Candidates",
-    body: "<p>My updated MVP rankings after this week's games. Jokic continues to dominate with his all-around play, averaging a near triple-double while leading the Nuggets to the West's top seed.</p><p>1. Nikola Jokic - Still the front-runner with his consistent excellence</p><p>2. Luka Dončić - Carrying the Mavs with historic offensive numbers</p><p>3. Giannis Antetokounmpo - The Bucks have surged with his return to form</p><p>4. Shai Gilgeous-Alexander - Leading the Thunder's surprising rise</p><p>5. Joel Embiid - Missing games hurts his case, but dominant when on the floor</p><p>I'm particularly impressed with SGA's defensive improvement this season. He's gone from being just an offensive star to a complete two-way player.</p>",
+    body: "<p>My updated MVP rankings after this week's games. Jokic continues to dominate with his all-around play, averaging a near triple-double while leading the Nuggets to the West's top seed.</p><p>1. Nikola Jokić - Still the front-runner with his consistent excellence</p><p>2. Luka Dončić - Carrying the Mavs with historic offensive numbers</p><p>3. Giannis Antetokounmpo - The Bucks have surged with his return to form</p><p>4. Shai Gilgeous-Alexander - Leading the Thunder's surprising rise</p><p>5. Joel Embiid - Missing games hurts his case, but dominant when on the floor</p><p>I'm particularly impressed with SGA's defensive improvement this season. He's gone from being just an offensive star to a complete two-way player.</p>",
     type: "Commentary",
-    tagIds: [13, 17, 21],
+    tagIds: [13, 21],
     dateCreated: new Date(2025, 3, 21, 14, 45),
     dateModified: new Date(2025, 3, 21, 14, 45)
   },
