@@ -55,7 +55,7 @@ const sampleEntries = [
   },
   {
     title: "Top 5 MVP Candidates",
-    body: "<p>My updated MVP rankings after this week's games. Jokic continues to dominate with his all-around play, averaging a near triple-double while leading the Nuggets to the West's top seed.</p><p>1. Nikola Jokić - Still the front-runner with his consistent excellence</p><p>2. Luka Dončić - Carrying the Mavs with historic offensive numbers</p><p>3. Giannis Antetokounmpo - The Bucks have surged with his return to form</p><p>4. Shai Gilgeous-Alexander - Leading the Thunder's surprising rise</p><p>5. Joel Embiid - Missing games hurts his case, but dominant when on the floor</p><p>I'm particularly impressed with SGA's defensive improvement this season. He's gone from being just an offensive star to a complete two-way player.</p>",
+    body: "<p>My updated MVP rankings after this week's games. Jokić continues to dominate with his all-around play, averaging a near triple-double while leading the Nuggets to the West's top seed.</p><p>1. Nikola Jokić - Still the front-runner with his consistent excellence</p><p>2. Luka Dončić - Carrying the Mavs with historic offensive numbers</p><p>3. Giannis Antetokounmpo - The Bucks have surged with his return to form</p><p>4. Shai Gilgeous-Alexander - Leading the Thunder's surprising rise</p><p>5. Joel Embiid - Missing games hurts his case, but dominant when on the floor</p><p>I'm particularly impressed with SGA's defensive improvement this season. He's gone from being just an offensive star to a complete two-way player.</p>",
     type: "Commentary",
     tagIds: [13, 21],
     dateCreated: new Date(2025, 3, 21, 14, 45),
