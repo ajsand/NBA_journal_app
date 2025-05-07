@@ -1,0 +1,141 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from '../../db/db';
+import TagBadge from './TagBadge';
+import { X, ChevronDown } from 'lucide-react';
+
+function TagsDropdown({ selectedTagIds, onChange }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const dropdownRef = useRef(null);
+  
+  // Get all tags from db
+  const tags = useLiveQuery(() => db.tags.toArray());
+  
+  // Filter tags based on search text
+  const filteredTags = tags?.filter(tag => 
+    tag.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+  
+  // Group tags by category
+  const groupedTags = filteredTags?.reduce((acc, tag) => {
+    if (!acc[tag.category]) {
+      acc[tag.category] = [];
+    }
+    acc[tag.category].push(tag);
+    return acc;
+  }, {});
+  
+  // Get selected tags for display
+  const selectedTags = tags?.filter(tag => selectedTagIds.includes(tag.id)) || [];
+  
+  // Handle tag selection
+  const handleTagSelect = (tagId) => {
+    const newSelection = selectedTagIds.includes(tagId)
+      ? selectedTagIds.filter(id => id !== tagId)
+      : [...selectedTagIds, tagId];
+    
+    onChange(newSelection);
+  };
+  
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center w-56 px-3 py-2 border border-gray-300 rounded-md bg-white text-sm"
+      >
+        <span className="truncate mr-1">
+          {selectedTags.length > 0 
+            ? `${selectedTags.length} tag${selectedTags.length !== 1 ? 's' : ''} selected` 
+            : 'Select tags...'}
+        </span>
+        <ChevronDown size={16} className="ml-auto" />
+      </button>
+      
+      {isOpen && (
+        <div className="absolute z-10 mt-1 w-72 bg-white shadow-lg rounded-md border border-gray-200">
+          <div className="p-2 border-b border-gray-200">
+            <input
+              type="text"
+              placeholder="Search tags..."
+              className="w-full px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-primary-500"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </div>
+          
+          <div className="max-h-64 overflow-y-auto p-2">
+            {groupedTags && Object.keys(groupedTags).length > 0 ? (
+              Object.entries(groupedTags).map(([category, categoryTags]) => (
+                <div key={category} className="mb-2">
+                  <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1 px-2">
+                    {category}
+                  </h4>
+                  <div className="flex flex-wrap gap-1 px-1">
+                    {categoryTags.map(tag => (
+                      <div 
+                        key={tag.id}
+                        onClick={() => handleTagSelect(tag.id)}
+                        className={`cursor-pointer rounded-md px-2 py-1 text-sm border ${
+                          selectedTagIds.includes(tag.id)
+                            ? 'border-primary-500 bg-primary-50'
+                            : 'border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        {tag.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-2 text-center text-gray-500">
+                {tags?.length === 0 ? 'No tags available.' : 'No matching tags found.'}
+              </div>
+            )}
+          </div>
+          
+          {selectedTags.length > 0 && (
+            <div className="border-t border-gray-200 p-2">
+              <h4 className="text-xs font-medium text-gray-500 mb-1 px-1">Selected:</h4>
+              <div className="flex flex-wrap gap-1">
+                {selectedTags.map(tag => (
+                  <div 
+                    key={tag.id}
+                    className="flex items-center bg-primary-100 text-primary-700 rounded-md px-2 py-0.5 text-sm"
+                  >
+                    <span>{tag.name}</span>
+                    <X 
+                      size={14} 
+                      className="ml-1 cursor-pointer" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTagSelect(tag.id);
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default TagsDropdown;
