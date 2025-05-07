@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../db/db';
+import { tagsService } from '../../services/tagsService';
 import TagBadge from './TagBadge';
 import { X, ChevronDown } from 'lucide-react';
 
@@ -37,7 +38,22 @@ function TagsDropdown({ selectedTagIds, onChange }) {
     
     onChange(newSelection);
   };
-  
+
+    // Handle tag deletion
+    const handleDeleteTag = async (tagId) => {
+      try {
+        await tagsService.deleteTag(tagId);
+        // Remove from selected tags if present
+        if (selectedTagIds.includes(tagId)) {
+          onChange(selectedTagIds.filter(id => id !== tagId));
+        }
+        setShowDeleteConfirm(null);
+      } catch (error) {
+        console.error('Error deleting tag:', error);
+        alert('Failed to delete tag. Please try again.');
+      }
+    };
+
   // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -132,6 +148,30 @@ function TagsDropdown({ selectedTagIds, onChange }) {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Delete modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+            <h3 className="text-xl font-semibold mb-4">Delete Tag</h3>
+            <p className="mb-6">Are you sure you want to delete this tag? It will be removed from all entries that use it.</p>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setShowDeleteConfirm(null)}
+                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteTag(showDeleteConfirm)}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
